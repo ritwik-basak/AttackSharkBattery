@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "attack-shark-battery"
+version = "0.1.0"
+description = "Windows HID discovery and battery tray utility experiments for the Attack Shark X11 mouse."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "hidapi>=0.14.0",
+]
+
+[project.optional-dependencies]
+tray = [
+    "pillow>=10.0.0",
+    "pystray>=0.19.0",
+]
+build = [
+    "pyinstaller>=6.0.0",
+]
+
+[project.scripts]
+attack-shark-battery = "attack_shark_battery.cli:main"
+attack-shark-battery-tray = "attack_shark_battery.tray:main"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.setuptools.packages.find]
+where = ["src"]
