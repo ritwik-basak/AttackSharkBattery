@@ -102,10 +102,23 @@ attack-shark-battery-tray
 The tray app refreshes every 60 seconds, uses a green/yellow/red battery icon,
 updates the tooltip, and sends one low-battery notification at 20% or below.
 
+Enable startup after Windows login:
+
+```powershell
+attack-shark-battery autostart enable
+```
+
+Check or disable startup:
+
+```powershell
+attack-shark-battery autostart status
+attack-shark-battery autostart disable
+```
+
 ## Current Status
 
 - Phase 1 HID enumeration: implemented.
 - Phase 2 raw packet logging and feature/input probing: implemented as CLI experiments.
 - Phase 3 battery decoding: implemented for the observed Windows HID packet.
 - Phase 4 tray utility: implemented.
-- Phase 5 PyInstaller packaging: pending tray utility.
+- Phase 5 PyInstaller packaging: pending.

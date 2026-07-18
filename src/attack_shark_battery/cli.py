@@ -7,6 +7,7 @@ import time
 from datetime import datetime
 from typing import Sequence
 
+from .startup import disable_startup, enable_startup, get_startup_command
 from .hid_tools import HidDeviceInfo, bytes_to_hex, enumerate_devices, find_device, open_device
 
 BATTERY_SIGNATURE = bytes([0x03, 0x55, 0x40, 0x01])
@@ -98,6 +99,30 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="Comma-separated feature report IDs to poll for changes.",
     )
     watch_parser.set_defaults(func=_run_watch)
+
+    autostart_parser = subparsers.add_parser(
+        "autostart",
+        help="Manage Windows startup for the tray utility.",
+    )
+    autostart_subparsers = autostart_parser.add_subparsers(dest="autostart_command", required=True)
+
+    autostart_enable_parser = autostart_subparsers.add_parser(
+        "enable",
+        help="Start the tray utility when you sign in to Windows.",
+    )
+    autostart_enable_parser.set_defaults(func=_run_autostart_enable)
+
+    autostart_disable_parser = autostart_subparsers.add_parser(
+        "disable",
+        help="Remove the tray utility from Windows startup.",
+    )
+    autostart_disable_parser.set_defaults(func=_run_autostart_disable)
+
+    autostart_status_parser = autostart_subparsers.add_parser(
+        "status",
+        help="Show whether Windows startup is enabled.",
+    )
+    autostart_status_parser.set_defaults(func=_run_autostart_status)
 
     args = parser.parse_args(argv)
     try:
@@ -320,6 +345,29 @@ def _run_watch(args: argparse.Namespace) -> int:
     finally:
         for _, handle in handles:
             handle.close()
+    return 0
+
+
+def _run_autostart_enable(_: argparse.Namespace) -> int:
+    command = enable_startup()
+    print("Autostart: enabled")
+    print(f"Command: {command}")
+    return 0
+
+
+def _run_autostart_disable(_: argparse.Namespace) -> int:
+    removed = disable_startup()
+    print("Autostart: disabled" if removed else "Autostart: already disabled")
+    return 0
+
+
+def _run_autostart_status(_: argparse.Namespace) -> int:
+    command = get_startup_command()
+    if command:
+        print("Autostart: enabled")
+        print(f"Command: {command}")
+    else:
+        print("Autostart: disabled")
     return 0
 
 
