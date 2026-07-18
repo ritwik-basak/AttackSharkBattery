@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-import shutil
 import sys
 import winreg
 
@@ -10,12 +9,6 @@ RUN_VALUE_NAME = "AttackSharkBattery"
 
 
 def build_startup_command() -> str:
-    tray_exe = shutil.which("attack-shark-battery-tray.exe") or shutil.which(
-        "attack-shark-battery-tray"
-    )
-    if tray_exe:
-        return _quote(tray_exe)
-
     pythonw = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
     launcher = pythonw if os.path.exists(pythonw) else sys.executable
     return f"{_quote(launcher)} -m attack_shark_battery.tray"
@@ -48,4 +41,3 @@ def get_startup_command() -> str | None:
 
 def _quote(value: str) -> str:
     return f'"{value}"'
-
