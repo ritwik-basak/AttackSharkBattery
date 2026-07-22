@@ -18,6 +18,30 @@ python -m pip install -e .
 If `hidapi` fails to install, install Microsoft Visual C++ Build Tools or try the
 latest Python 3.13 wheel published for `hidapi`.
 
+## Build a Windows App
+
+To create a standalone tray executable:
+
+```powershell
+.\build-windows.ps1
+```
+
+The built app will be in:
+
+```powershell
+.\dist\AttackSharkBattery.exe
+```
+
+For people who do not use VS Code or Python, the easiest release flow is:
+
+1. Build `AttackSharkBattery.exe`.
+2. Zip the `dist` output.
+3. Upload the zip to GitHub Releases.
+4. Tell users to download, unzip, and run the EXE.
+
+If you want it to start automatically after login, the app already has an
+`autostart enable` command that can be run once on the user's machine.
+
 ## Phase 1: HID Enumeration
 
 Print every HID interface:
@@ -121,4 +145,4 @@ attack-shark-battery autostart disable
 - Phase 2 raw packet logging and feature/input probing: implemented as CLI experiments.
 - Phase 3 battery decoding: implemented for the observed Windows HID packet.
 - Phase 4 tray utility: implemented.
-- Phase 5 PyInstaller packaging: pending.
+- Phase 5 PyInstaller packaging: added as `build-windows.ps1`.
